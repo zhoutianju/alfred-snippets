@@ -12,6 +12,7 @@ import priv.zhoutj.tools.alfred.support.AlfredSupport;
 import priv.zhoutj.tools.alfred.support.ClipboardSupport;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Spring Shell Command
@@ -31,8 +32,9 @@ public class Commands {
                         @ShellOption(valueProvider = CmdCompleter.class) String cmd) throws IOException {
         String snippet = alfredSupport.findSnippetByPrefixAndCmd(prefix, cmd);
         try {
-            clipboardSupport.putClipboard(alfredSupport.replaceExp(snippet));
-            System.out.println("success to put into clipboard.");
+            String value = alfredSupport.replaceExp(snippet);
+            clipboardSupport.putClipboard(value);
+            System.out.printf("success to put into clipboard, value: \"%s\".\n", value);
         } catch (Exception e) {
             log.error("error", e);
             System.out.println(snippet);
